@@ -152,6 +152,37 @@ Run the scraper on https://shopalto.xyz/product/aurora-wireless-headphones again
 
 ---
 
+## Step 4: Run one scraper across many URLs
+
+> **Challenge:** One product page is a demo. Real work means running the same scraper across a whole catalog and getting one clean row per URL.
+
+Once a scraper works for a single page, reuse the **same Collector ID** to run it across a batch of URLs in one go. Paste this prompt, keep your Collector ID, and let the agent fan out across all ten product pages below.
+
+```text
+Run an existing Bright Data scraper across multiple URLs in one batch. Run every Bright Data CLI command through `npx -p @brightdata/cli` so nothing is installed globally. Replace <COLLECTOR_ID> with the Collector ID from the build step, then do each step in order and stop if a step fails:
+
+1. Authenticate by running `npx -p @brightdata/cli bdata login`. npx fetches the CLI on demand, so there is nothing to install.
+2. Run collector <COLLECTOR_ID> against all of the following URLs in a single batch run:
+   https://shopalto.xyz/product/pulse-smartwatch
+   https://shopalto.xyz/product/clack-75-mechanical-keyboard
+   https://shopalto.xyz/product/mute-pro-earbuds
+   https://shopalto.xyz/product/hub-9-usb-c-dock
+   https://shopalto.xyz/product/quiet-fleece-hoodie
+   https://shopalto.xyz/product/field-denim-jacket
+   https://shopalto.xyz/product/everyday-cotton-tee
+   https://shopalto.xyz/product/lane-canvas-sneakers
+   https://shopalto.xyz/product/dugout-baseball-cap
+   https://shopalto.xyz/product/highland-wool-scarf
+3. Wait for the run to finish, then pretty-print the result as a JSON array with one row per URL.
+4. Confirm you got ten rows back and report any URL that returned empty or errored.
+```
+
+> **Expected result:** a JSON array of ten rows, one per product, each carrying the same fields your scraper extracts (e.g. name, price, description, image_url, rating). Any URL that failed is called out separately so you can re-run just those.
+
+> **Tip:** Save the ten URLs in a text file (one per line) and tell the agent to read the file instead of pasting them inline. This scales the same prompt from ten URLs to thousands.
+
+---
+
 ## Related docs
 
 - [Scraper library (browse)](https://brightdata.com/cp/scrapers/browse): check for a ready-made scraper first
