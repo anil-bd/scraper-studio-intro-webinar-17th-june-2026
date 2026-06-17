@@ -1,23 +1,23 @@
-# Bright Data Scraper Studio — Coding Agent Prompts
+# Bright Data Scraper Studio: Coding Agent Prompts
 
 Copy-pasteable prompts for building a [Bright Data Scraper Studio](https://docs.brightdata.com/datasets/scraper-studio/coding-agent-prompts) scraper with a coding agent (Claude Code, Cursor, or Codex).
 
 The flow is deliberate and simple:
 
-1. **Check the library first** — see if Bright Data already ships a ready-made scraper for your target before you build anything.
-2. **Build a scraper in one prompt** — if there's no pre-built option, paste a single prompt and the agent builds and runs it.
-3. **Build, run, heal, verify** — the full self-heal loop for extending a scraper's schema in place.
-4. **Run it step by step** — work through the same loop one prompt at a time when you want to inspect each result.
+1. **Check the library first**: see if Bright Data already ships a ready-made scraper for your target before you build anything.
+2. **Build a scraper in one prompt**: if there's no pre-built option, paste a single prompt and the agent builds and runs it.
+3. **Build, run, heal, verify**: the full self-heal loop for extending a scraper's schema in place.
+4. **Run it step by step**: work through the same loop one prompt at a time when you want to inspect each result.
 
 ---
 
 ## The challenge
 
-Scraping a website by hand is fragile work. You write CSS selectors, the site ships a redesign, your selectors break, and you're back to inspecting the DOM. Extending a scraper to grab one more field means another round of manual parsing. Most of that effort is wasted twice over — first because a ready-made scraper for popular sites probably already exists, and second because a coding agent can write, run, and self-heal the scraper for you.
+Scraping a website by hand is fragile work. You write CSS selectors, the site ships a redesign, your selectors break, and you're back to inspecting the DOM. Extending a scraper to grab one more field means another round of manual parsing. Most of that effort is wasted twice over, first because a ready-made scraper for popular sites probably already exists, and second because a coding agent can write, run, and self-heal the scraper for you.
 
 This guide solves both: **check the library before you build**, then let your coding agent (Claude Code, Cursor, or Codex) drive the Bright Data CLI through the full build → run → heal → verify loop.
 
-Every example below targets the public demo store **[shopalto.xyz](https://shopalto.xyz/)** — specifically the product page `https://shopalto.xyz/product/aurora-wireless-headphones` — so you can run each prompt verbatim and compare your output against the expected result.
+Every example below targets the public demo store **[shopalto.xyz](https://shopalto.xyz/)**: specifically the product page `https://shopalto.xyz/product/aurora-wireless-headphones`, so you can run each prompt verbatim and compare your output against the expected result.
 
 ---
 
@@ -26,11 +26,11 @@ Every example below targets the public demo store **[shopalto.xyz](https://shopa
 - A Bright Data account ([sign up free](https://brightdata.com/?hs_signup=1&utm_source=docs), no card required).
 - A coding agent with terminal access: Claude Code, Cursor, or Codex.
 
-You do **not** install the Bright Data CLI ahead of time. The prompts run it through `npx`, which fetches the latest version on demand — no global dependency to maintain.
+You do **not** install the Bright Data CLI ahead of time. The prompts run it through `npx`, which fetches the latest version on demand, no global dependency to maintain.
 
 ---
 
-## Step 0 — Check the Bright Data Scraper library first
+## Step 0: Check the Bright Data Scraper library first
 
 > **Challenge:** Don't build what already exists. Most popular sites already have a maintained, ready-made scraper.
 
@@ -40,14 +40,14 @@ Before building a custom scraper, check whether Bright Data already has one for 
 
 1. Open the [Scraper library](https://brightdata.com/cp/scrapers/browse).
 2. Search for your target site or domain (e.g. `amazon`, `linkedin`, `instagram`, `shopify`).
-3. If a matching scraper exists, use it directly — no build needed.
+3. If a matching scraper exists, use it directly, no build needed.
 4. If nothing matches, continue to **Step 1** and build your own with a coding agent.
 
-> **Tip:** The library covers most major sites. Building a custom scraper is for the long tail — pages with no ready-made collector.
+> **Tip:** The library covers most major sites. Building a custom scraper is for the long tail, pages with no ready-made collector.
 
 ---
 
-## Step 1 — Build a scraper in one prompt
+## Step 1: Build a scraper in one prompt
 
 > **Challenge:** You need a working scraper fast and don't want to hand-write or maintain selectors.
 
@@ -73,9 +73,9 @@ For example, the filled-in second step for a product page reads:
 
 ---
 
-## Step 2 — Build, run, and self-heal in one prompt
+## Step 2: Build, run, and self-heal in one prompt
 
-> **Challenge:** Your scraper works today, but the site changes — or you need to add fields without breaking the existing schema.
+> **Challenge:** Your scraper works today, but the site changes, or you need to add fields without breaking the existing schema.
 
 To run the full build → run → heal → approve → re-run loop, paste this single prompt and let the agent work through every step. The pattern is deliberate: build a minimal scraper first, then heal it to extend the schema, so the heal envelope's `preview_result` is easier to verify against a known-good baseline.
 
@@ -94,13 +94,13 @@ Build, run, heal and verify a Bright Data scraper end to end. Run every Bright D
 
 ---
 
-## Step 3 — Run the flow step by step
+## Step 3: Run the flow step by step
 
 > **Challenge:** When the one-shot loop is too opaque, you want to inspect every Collector ID, run result, and heal envelope before moving on.
 
 Work through the prompts below one at a time when you want to inspect each Collector ID, run result, and heal envelope before moving on.
 
-### 3.1 — Authenticate the CLI
+### 3.1: Authenticate the CLI
 
 ```text
 Run every Bright Data CLI command through `npx -p @brightdata/cli` so nothing is installed globally. Authenticate by running `npx -p @brightdata/cli bdata login`, then confirm the version with `npx -p @brightdata/cli bdata --version` before continuing.
@@ -108,7 +108,7 @@ Run every Bright Data CLI command through `npx -p @brightdata/cli` so nothing is
 
 > **Expected result:** the agent prints a `bdata` version and confirms it is authenticated.
 
-### 3.2 — Build a minimal scraper
+### 3.2: Build a minimal scraper
 
 ```text
 Create a Bright Data scraper for https://shopalto.xyz/product/aurora-wireless-headphones that extracts just two fields: product name and price. Show me the Collector ID when it is done.
@@ -116,7 +116,7 @@ Create a Bright Data scraper for https://shopalto.xyz/product/aurora-wireless-he
 
 > **Expected result:** the agent reports a Collector ID like `c_mpohus372o5tmid1jk`. Hold onto it; the rest of the prompts reuse the same ID.
 
-### 3.3 — Run it
+### 3.3: Run it
 
 ```text
 Run that scraper on https://shopalto.xyz/product/aurora-wireless-headphones and pretty-print the result.
@@ -124,7 +124,7 @@ Run that scraper on https://shopalto.xyz/product/aurora-wireless-headphones and 
 
 > **Expected result:** a JSON array with one row, populated with `name` and `price` only.
 
-### 3.4 — Heal and add more fields
+### 3.4: Heal and add more fields
 
 ```text
 Extend the scraper in place. Heal it to also capture description, image url and rating alongside the existing name and price. Keep the same Collector ID. Anchor the heal on https://shopalto.xyz/product/aurora-wireless-headphones and show me the approval envelope when it is ready.
@@ -132,7 +132,7 @@ Extend the scraper in place. Heal it to also capture description, image url and 
 
 > **Expected result:** the agent reports `status: "awaiting_approval"` with a `preview_result` row that now shows five fields.
 
-### 3.5 — Approve the fix
+### 3.5: Approve the fix
 
 ```text
 The preview looks good. Approve the fix, anchored on https://shopalto.xyz/product/aurora-wireless-headphones.
@@ -140,7 +140,7 @@ The preview looks good. Approve the fix, anchored on https://shopalto.xyz/produc
 
 > **Expected result:** `status` advances to `done`. The Collector ID is unchanged.
 
-### 3.6 — Verify the expanded schema
+### 3.6: Verify the expanded schema
 
 ```text
 Run the scraper on https://shopalto.xyz/product/aurora-wireless-headphones again and confirm all five fields now come back: name, price, description, image_url and rating.
@@ -154,9 +154,9 @@ Run the scraper on https://shopalto.xyz/product/aurora-wireless-headphones again
 
 ## Related docs
 
-- [Scraper library (browse)](https://brightdata.com/cp/scrapers/browse) — check for a ready-made scraper first
-- [Coding agent prompts](https://docs.brightdata.com/datasets/scraper-studio/coding-agent-prompts) — source for the prompts above
-- [Build with the Bright Data CLI](https://docs.brightdata.com/datasets/scraper-studio/build-with-the-cli) — install, log in, create, run, heal
-- [Self-Healing tool](https://docs.brightdata.com/datasets/scraper-studio/self-healing-tool) — fix a scraper from the control panel
-- [Scraper Studio API quickstart](https://docs.brightdata.com/datasets/scraper-studio/quickstart) — trigger an existing scraper from cURL, Python, or Node.js
-- [Bright Data CLI commands](https://docs.brightdata.com/cli/commands) — flag reference for create, heal, and approve
+- [Scraper library (browse)](https://brightdata.com/cp/scrapers/browse): check for a ready-made scraper first
+- [Coding agent prompts](https://docs.brightdata.com/datasets/scraper-studio/coding-agent-prompts): source for the prompts above
+- [Build with the Bright Data CLI](https://docs.brightdata.com/datasets/scraper-studio/build-with-the-cli): install, log in, create, run, heal
+- [Self-Healing tool](https://docs.brightdata.com/datasets/scraper-studio/self-healing-tool): fix a scraper from the control panel
+- [Scraper Studio API quickstart](https://docs.brightdata.com/datasets/scraper-studio/quickstart): trigger an existing scraper from cURL, Python, or Node.js
+- [Bright Data CLI commands](https://docs.brightdata.com/cli/commands): flag reference for create, heal, and approve
